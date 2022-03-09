@@ -1,0 +1,89 @@
+body {
+  height: 100vh;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: rgb(45, 45, 45);
+  background-image: url('world.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  box-shadow: inset 400px 400px 400px 400px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}.clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.analog {
+  position: relative;
+  margin: auto;
+  height: 200px;
+  width: 200px;
+  border: 3px solid white;
+  border-radius: 50%;
+
+}
+
+#hour,
+#minute,
+#second, 
+#centerdot {
+  position: absolute;
+  background: white;
+  border-radius: 10px;
+  transform-origin: bottom;
+}
+  
+#hour {
+  width: 4px;
+  height: 30%;
+  top: 20%;
+  left: 50%;
+}
+  
+#minute {
+  width: 2.5px;
+  height: 40%;
+  top: 10%;
+  left: 50%;
+}
+  
+#second {
+  width: 1.3px;
+  height: 42%;
+  top: 8%;
+  left: 50%;
+}
+
+#centerdot {
+  width: 7px;
+  height: 7px;
+  top: 48.5%;
+  left: 49%;
+}
+
+.digital {
+  margin-left: 100px;
+  width: 230px;
+  font-size: 30px;
+  font-family: 'Playfair Display';
+  color: white;
+  text-align: left;
+}
+@media only screen and (max-width: 480px) {
+
+  .digital {
+    margin-left: 15px;
+    font-size: 20px;
+    width: 100px;
+  }
+
+  .digital h1 {
+    font-size: 32px;
+  } 
+}
