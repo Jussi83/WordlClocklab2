@@ -1,10 +1,22 @@
 const cityHeader = document.getElementById('current-city');
-const selectCity = document.getElementById('select-city');
+const selectCity = document.getElementById('city');
 const cityListElement = document.getElementsByName('city-list')[0];
 
 let citysList = [];
 let thisTimeZone = 'Europe/Paris';
 let timeZones = [];
+
+let country;
+let addCity = null;
+
+function InputTimezone() {
+  let html = '';
+
+  for (let timeZone of timeZones) {
+    html += `<option>${timeZone}</option>`;
+  }
+  inputTimezone.innerHTML = html;
+}
 
 function setTime() {
   //update the current time every second
@@ -49,6 +61,40 @@ function setTime() {
 
 fillDatalist();
 setTime();
+addButton.addEventListener('click', () => {
+  let newCityName = inputCity.value;
+  let newCityTimezone = inputTimezone.value;
+
+  addCity = {
+    name: newCityName,
+    timeZone: newCityTimezone
+  };
+
+  saveCity(addCity);
+  fillDatalist();
+
+  inputCity.value = '';
+})
+
+function saveCity(city) {
+  let myCitys = JSON.parse(localStorage.getItem("myCitys")) || [];
+  myCitys.push(city);
+  localStorage.setItem("myCitys", JSON.stringify(myCitys));
+};
+
+//clear inputs tag on users click
+cityListElement.addEventListener('click', () => {
+  cityListElement.value = '';
+})
+
+cityListElement.addEventListener('input', () => {
+  let city;
+  if (city = citylist.find(x => x.name === cityListElement.value)) {
+    cityHeader.innerHTML = cityListElement.value;
+    thisTimeZone = city.timeZone;
+  }
+
+});
 async function fillDatalist() {
   let rawData = await fetch('timezones.json');
   country = await rawData.json();
@@ -67,7 +113,7 @@ async function fillDatalist() {
   for (city of citylist) {
     let tempNamesArray = new Array
     let arrayTemp = new Array
-    //if one entry contains several cities, split into several entries
+    //if one entry contains several citys, splits it into several entries.
     if (city.name.includes(',')) {
       tempNamesArray = city.name.split(', ');
 
