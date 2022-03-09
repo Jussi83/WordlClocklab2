@@ -75,6 +75,27 @@ body {
   color: white;
   text-align: left;
 }
+.citys {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.citys h2 {
+  padding-bottom: 20px;
+  font-family: 'Fantasy';
+  font-size: 26px;
+  color: white;
+}
+
+#city-list {
+  width: 300px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-family: 'Fantasy';
+}
 @media only screen and (max-width: 480px) {
 
   .digital {
