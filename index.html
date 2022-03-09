@@ -5,8 +5,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>WorldClock</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <title>World clocks</title>
 </head>
 
 <body>
@@ -15,20 +16,35 @@
       <div id="hour"></div>
       <div id="minute"></div>
       <div id="second"></div>
-      <div id="centerdot"></div>
+      <div id="center-dot"></div>
     </div>
     <div class="digital">
       <h1 id="digitalTime"></h1>
     </div>
   </div>
-  <div class="citys">
+  <div class="
+  
+  citys">
+
     <h2 id="current-city">Paris</h2>
-    <input type="text" id="city-list" name="city-list" list="select-city"
-      placeholder="Click to see a drop down  or search for your city">
-    <datalist id="select-city">
+    <p>Click outside the box to refresh so the list can be visible again.</p>
+    <input type="text" id="city-list" name="city-list" list="city"
+      placeholder="Click to see citys or Search for your city">
+    <datalist id="city">
     </datalist>
+
+    <div class="new-city">
+      <input type="text" id="inputcity" name="inputcity" placeholder="Add your own city">
+      <select id="inputtimezone">
+        <option selected disabled hidden></option>
+      </select>
+      <button id="addbutton">Save/add</button>
+    </div>
+
+
   </div>
   <script src="/main.js"></script>
 </body>
+
 
 </html>

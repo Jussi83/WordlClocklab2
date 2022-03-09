@@ -1,25 +1,28 @@
-const cityHeader = document.getElementById('current-city');
-const selectCity = document.getElementById('city');
-const cityListElement = document.getElementsByName('city-list')[0];
+const selectedCity = document.getElementById('city');
+const listElement = document.getElementsByName('city-list')[0];
+const cityHead = document.getElementById('current-city');
+const ipCity = document.getElementById('inputcity');
+const ipTimezone = document.getElementById('inputtimezone');
+const buttonAdd = document.getElementById('addbutton');
 
-let citysList = [];
+let cityList = [];
 let thisTimeZone = 'Europe/Paris';
 let timeZones = [];
 
 let country;
-let addCity = null;
+let addedCity = null;
 
-function InputTimezone() {
+function inputTimezone() {
   let html = '';
 
   for (let timeZone of timeZones) {
     html += `<option>${timeZone}</option>`;
   }
-  inputTimezone.innerHTML = html;
+  ipTimezone.innerHTML = html;
 }
 
 function setTime() {
-  //update the current time every second
+  //updates time every second.
   setInterval(() => {
     let date = new Date();
     let options = {
@@ -59,43 +62,57 @@ function setTime() {
   }, 1);
 }
 
-fillDatalist();
+dataList();
 setTime();
-addButton.addEventListener('click', () => {
-  let newCityName = inputCity.value;
-  let newCityTimezone = inputTimezone.value;
 
-  addCity = {
-    name: newCityName,
-    timeZone: newCityTimezone
+buttonAdd.addEventListener('click', () => {
+  let newCity = ipCity.value;
+  let cityTimezoneUpdate = ipTimezone.value;
+
+  addedCity = {
+    name: newCity,
+    timeZone: cityTimezoneUpdate
   };
 
-  saveCity(addCity);
-  fillDatalist();
+  saveCity(addedCity);
+  dataList();
 
-  inputCity.value = '';
+  ipCity.value = '';
 })
 
 function saveCity(city) {
-  let myCitys = JSON.parse(localStorage.getItem("myCitys")) || [];
-  myCitys.push(city);
-  localStorage.setItem("myCitys", JSON.stringify(myCitys));
+  let citys = JSON.parse(localStorage.getItem("myCitys")) || [];
+  citys.push(city);
+  localStorage.setItem("myCitys", JSON.stringify(citys));
 };
 
-//clear inputs tag on users click
-cityListElement.addEventListener('click', () => {
-  cityListElement.value = '';
+//clears input tags on users click
+listElement.addEventListener('click', () => {
+  listElement.value = '';
 })
 
-cityListElement.addEventListener('input', () => {
+listElement.addEventListener('input', () => {
   let city;
-  if (city = citylist.find(x => x.name === cityListElement.value)) {
-    cityHeader.innerHTML = cityListElement.value;
+  if (city = cityList.find(x => x.name === listElement.value)) {
+    cityHead.innerHTML = listElement.value;
     thisTimeZone = city.timeZone;
+
+
   }
 
 });
-async function fillDatalist() {
+//Can change diffrent backgrounds but has no function!
+/*async function changeBackgroundImg(url) {
+  let imageExist = await fetch(url);
+
+  if (imageExist.ok) {
+    document.body.style.backgroundImage = `url('${url}')`;
+  } else {
+    document.body.style.backgroundImage = `url('City.jpeg')`;
+  }
+}*/
+//fills a list with data.
+async function dataList() {
   let rawData = await fetch('timezones.json');
   country = await rawData.json();
 
@@ -107,62 +124,62 @@ async function fillDatalist() {
       name: name,
       timeZone: timeZone
     }
-    citylist.push(city);
+    cityList.push(city);
   }
 
-  for (city of citylist) {
-    let tempNamesArray = new Array
-    let arrayTemp = new Array
-    //if one entry contains several citys, splits it into several entries.
+  for (city of cityList) {
+    let arrayNames = new Array
+    let tempArray = new Array
+    //if one entry contains several citys, This splits into several entries
     if (city.name.includes(',')) {
-      tempNamesArray = city.name.split(', ');
+      arrayNames = city.name.split(', ');
 
-      for (let i = 0; i < tempNamesArray.length; i++) {
+      for (let i = 0; i < arrayNames.length; i++) {
         let thisCity = {
-          name: tempNamesArray[i],
+          name: arrayNames[i],
           timeZone: city.timeZone
         }
-        arrayTemp.push(thisCity)
+        tempArray.push(thisCity)
       }
 
-      citylist = citylist.concat(arrayTemp);
-      const index = citylist.indexOf(city);
-      citylist.splice(index, 1);
+      cityList = cityList.concat(tempArray);
+      const index = cityList.indexOf(city);
+      cityList.splice(index, 1);
     }
   }
-
-  let mycitys;
+  //get citys from localstorage
+  let myCitys;
   if (JSON.parse(localStorage.getItem("myCitys")) !== null) {
-    mycitys = JSON.parse(localStorage.getItem("myCitys"));
-    citylist = citylist.concat(mycitys);
+    myCitys = JSON.parse(localStorage.getItem("myCitys"));
+    cityList = cityList.concat(myCitys);
   }
 
-  //sorts citys in alphabetically order
-  citylist.sort((a, b) => {
-    let fa = a.name.toLowerCase(),
-      fb = b.name.toLowerCase();
+  //sort citys in a alphabetic order!
+  cityList.sort((a, b) => {
+    let sa = a.name.toLowerCase(),
+      sb = b.name.toLowerCase();
 
-    if (fa < fb) {
+    if (sa < sb) {
       return -1;
     }
-    if (fa > fb) {
+    if (sa > sb) {
       return 1;
     }
     return 0;
   });
 
-  //removes duplication
-  citylist = Array.from(citylist.reduce((a, o) => a.set(o.name, o), new Map()).values());
+  //remove duplicates
+  cityList = Array.from(cityList.reduce((a, o) => a.set(o.name, o), new Map()).values());
 
   let html = '';
 
-  for (city of citylist) {
+  for (city of cityList) {
     html += '<option>' + city.name + '</option>'
   }
 
-  //fills datalist with citys
-  selectCity.innerHTML = html;
+  //fills datalist with citys.
+  selectedCity.innerHTML = html;
 
   timeZones.sort()
-  fillInputTimezone();
+  inputTimezone();
 }
